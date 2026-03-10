@@ -34,7 +34,7 @@
   <p>{greetMsg}</p>
 
   
-  <a href="explorer/somerandompath">test link</a>
+  <a href="explorer/somerandompath">link to test page</a>
 </main>
 
 <style>
