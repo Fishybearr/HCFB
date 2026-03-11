@@ -1,18 +1,19 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
-
-  let fileList:String[];
+  
+  let path = $state("/home/aaron")
+  let fileList:String[] = $state([]);
 
   async function read_dir(event: Event) {
     event.preventDefault();
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    fileList = await invoke("read_files_from_path",{});
+    fileList = await invoke("read_files_from_path",{ path });
     console.log(fileList);
   }
 </script>
 
 <main class="container">
-  <h1>This is a page at that path</h1>
+  <h1>Displaying contents of {path}</h1>
 
   <button onclick={read_dir}>read files</button>
 

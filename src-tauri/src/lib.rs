@@ -1,26 +1,25 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
 
-use tokio::fs;
-
 
 #[tauri::command]
-async fn read_files_from_path() -> Result<Vec<String>,String>
+async fn read_files_from_path(path:String) -> Result<Vec<String>,String>
 {
+    
     //TODO: Update this to read in a path from user
-    let mut entries = tokio::fs::read_dir("./").await.map_err(|e| e.to_string())?;
+    let mut entries = tokio::fs::read_dir(path).await.map_err(|e| e.to_string())?;
 
-    let mut dirList:Vec<String> = Vec::new();
+    let mut dir_list:Vec<String> = Vec::new();
 
     
     while let Some(entry) = entries.next_entry().await.map_err(|e| e.to_string())?
     {
         let path = entry.path();
-        dirList.push(path.display().to_string())
+        dir_list.push(path.display().to_string())
     }
     
 
-    Ok(dirList)
+    Ok(dir_list)
 }
     
 
