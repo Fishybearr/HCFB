@@ -1,4 +1,4 @@
-# Highly Customizable File Browser (HCFB) OR RAD
+# Highly Customizable File Browser (HCFB)
 
 A file browser with high customizablity that is efficient and works on both Windows and Linux
 
@@ -32,3 +32,8 @@ This is my first time using Rust for a real project so don't give up like a dumb
 ## TODO
 - For CSS styling, create a config file at ~/.config/HCFB/style.css
     - Then read from that dir on program startup to populate css
+
+- Make each list entry a button that calls the function to refresh the page contents with the new from the button
+
+- Add a back button on top of the standard ../ to handle
+if a user went to a path from search as opposed to just going down another level

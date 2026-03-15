@@ -1,21 +1,43 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
+//serializing library for file struct
+use serde::Serialize;
+
+
+
+#[derive(Serialize)]
+pub struct FileObject
+{
+    path: String,
+    file_type: bool
+    
+}
 
 
 #[tauri::command]
-async fn read_files_from_path(path:String) -> Result<Vec<String>,String>
+async fn read_files_from_path(path:String) -> Result<Vec<FileObject>,String>
 {
-    
-    //TODO: Update this to read in a path from user
     let mut entries = tokio::fs::read_dir(path).await.map_err(|e| e.to_string())?;
 
-    let mut dir_list:Vec<String> = Vec::new();
+    let mut dir_list:Vec<FileObject> = Vec::new();
 
     
     while let Some(entry) = entries.next_entry().await.map_err(|e| e.to_string())?
     {
-        let path = entry.path();
-        dir_list.push(path.display().to_string())
+        //create an file object for each file in the directory
+        // and add it to the list
+
+        //attempt to get the the file type of the current file
+        let ft = entry.file_type().await.map_err(|e| e.to_string())?; 
+
+
+        let file_o = FileObject
+        {
+            path: entry.path().display().to_string(),
+            file_type: ft.is_dir()
+        };
+
+        dir_list.push(file_o)
     }
     
 
