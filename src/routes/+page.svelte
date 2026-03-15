@@ -7,9 +7,17 @@
     file_type:boolean
   }
   
-  let path = $state("/home/aaron")
+  let path = $state("/aaron/home")
   let history:string[] = [];
   let fileList:FileObject[] = $state([]);
+
+  //read initial home directory of user
+  read_home_path();
+
+  async function read_home_path()
+  {
+    path = await invoke<string>("read_home_dir");
+  }
 
   async function read_dir(event: Event) {
     event.preventDefault();

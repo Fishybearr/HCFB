@@ -13,6 +13,16 @@ pub struct FileObject
     
 }
 
+#[tauri::command]
+async fn read_home_dir() -> Result<String,String>
+{
+    match dirs::home_dir() 
+    {
+        Some(d) => Ok(d.to_string_lossy().to_string()),
+        None => Err("Could not open dir".to_string())
+    }
+}
+
 
 #[tauri::command]
 async fn read_files_from_path(path:String) -> Result<Vec<FileObject>,String>
@@ -45,16 +55,18 @@ async fn read_files_from_path(path:String) -> Result<Vec<FileObject>,String>
 }
     
 
+/* 
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
+*/
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet,read_files_from_path])
+        .invoke_handler(tauri::generate_handler![read_files_from_path,read_home_dir])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
