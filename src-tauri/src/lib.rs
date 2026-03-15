@@ -1,5 +1,7 @@
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 
+use std::path::Path;
+
 //serializing library for file struct
 use serde::Serialize;
 
@@ -20,6 +22,19 @@ async fn read_home_dir() -> Result<String,String>
     {
         Some(d) => Ok(d.to_string_lossy().to_string()),
         None => Err("Could not open dir".to_string())
+    }
+}
+
+
+#[tauri::command]
+async fn get_parent_dir(path:String) -> Result<String,String>
+{
+    let p = Path::new(&path);
+
+    match p.parent()
+    {
+        Some(parent) => Ok(parent.to_string_lossy().to_string()),
+        None => Err("Could not find parent".to_string())
     }
 }
 
@@ -66,7 +81,7 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![read_files_from_path,read_home_dir])
+        .invoke_handler(tauri::generate_handler![read_files_from_path,read_home_dir,get_parent_dir])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

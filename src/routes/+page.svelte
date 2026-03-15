@@ -7,7 +7,7 @@
     file_type:boolean
   }
   
-  let path = $state("/aaron/home")
+  let path = $state("")
   let history:string[] = [];
   let fileList:FileObject[] = $state([]);
 
@@ -19,12 +19,19 @@
     path = await invoke<string>("read_home_dir");
   }
 
+  async function read_parent_dir()
+  {
+    path = await invoke<string>("get_parent_dir", {path});
+  }
+
+  /*
   async function read_dir(event: Event) {
     event.preventDefault();
     // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
     fileList = await invoke<FileObject[]>("read_files_from_path",{ path });
     //console.log(fileList);
   }
+  */
 
   async function load_file_data()
   {
@@ -69,7 +76,8 @@
   <h1>Displaying contents of {path}</h1>
 
   <ul>
-  <li><button onclick={GoBack}>../</button></li>
+  <li><button onclick={GoBack}>{"<<"}</button></li>
+  <li><button onclick={read_parent_dir}>../</button></li>
 
   {#each fileList as file}
     <li><button onclick={ () => { //TODO: update this section to validate a path before adding to history
