@@ -37,3 +37,20 @@ This is my first time using Rust for a real project so don't give up like a dumb
 
 - Add a back button on top of the standard ../ to handle
 if a user went to a path from search as opposed to just going down another level
+
+- Need to deal with perm errors by something like letting user move up to root or something
+
+- [X] Update FileObjects to display local path in a directory instead of absolute path
+
+- Need to push to history stack any time you enter directory
+
+
+## Snippits
+```html
+{#each fileList as file}
+    <li><button onclick={ () => { //TODO: update this section to validate a path before adding to history
+    //Currently validates the next path while adding the current path to history regardless of it's filetype
+      if(file.file_type){history.push(path)} console.log(history); path = file.path }}>{file.path}, {file.file_type}</button></li>
+
+  {/each}
+  ```

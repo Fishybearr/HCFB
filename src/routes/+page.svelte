@@ -4,7 +4,8 @@
   interface FileObject 
   {
     path:string,
-    file_type:boolean
+    file_type:boolean,
+    file_name:string
   }
   
   let path = $state("")
@@ -78,18 +79,46 @@
   <ul>
   <li><button onclick={GoBack}>{"<<"}</button></li>
   <li><button onclick={read_parent_dir}>../</button></li>
-
-  {#each fileList as file}
-    <li><button onclick={ () => { //TODO: update this section to validate a path before adding to history
-    //Currently validates the next path while adding the current path to history regardless of it's filetype
-      if(file.file_type){history.push(path)} console.log(history); path = file.path }}>{file.path}, {file.file_type}</button></li>
-
-  {/each}
   </ul>
+
+  <div class="grid_container">
+
+    <button onclick={GoBack}>{"<<"}</button>  
+    
+    <button onclick={read_parent_dir}>../</button>  
+    <br>
+    
+
+    {#each fileList as file }
+    <div>
+      <button onclick={ () => { //TODO: update this section to validate a path before adding to history
+    //Currently validates the next path while adding the current path to history regardless of it's filetype
+      if(file.file_type){history.push(path)} console.log(history); path = file.path }}>
+      <img src="/phIcons/folder.png" alt="" width="10%" height="auto">
+      <br>
+      <span>{file.file_name}{file.file_type? "/" : ""}</span>
+      </button>
+    </div>
+    
+    {/each}
+  </div>
 
 </main>
 
 <style>
+
+.grid_container
+{
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.grid_container div
+{
+  padding: 10px;
+  width: 200px; /*FIXME: DO NOT USE CONSTANT PIXEL SIZES FOR ANYTHING*/
+  
+}
 
 
 </style>

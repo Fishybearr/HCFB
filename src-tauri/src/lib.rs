@@ -11,7 +11,8 @@ use serde::Serialize;
 pub struct FileObject
 {
     path: String,
-    file_type: bool
+    file_type: bool,
+    file_name: String
     
 }
 
@@ -54,12 +55,14 @@ async fn read_files_from_path(path:String) -> Result<Vec<FileObject>,String>
 
         //attempt to get the the file type of the current file
         let ft = entry.file_type().await.map_err(|e| e.to_string())?; 
+        let f_name = entry.file_name().display().to_string();
 
 
         let file_o = FileObject
         {
             path: entry.path().display().to_string(),
-            file_type: ft.is_dir()
+            file_type: ft.is_dir(),
+            file_name: f_name
         };
 
         dir_list.push(file_o)
